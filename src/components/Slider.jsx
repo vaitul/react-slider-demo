@@ -136,12 +136,7 @@ Slider.propTypes = {
         img: PropTypes.string.isRequired,
         text: PropTypes.string.isRequired,
         clientText: PropTypes.string.isRequired,
-    }))
+    })).isRequired
 }
-
-Slider.defaultProps = {
-    sliderData: []
-}
-
 
 export default Slider;
