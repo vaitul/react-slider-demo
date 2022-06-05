@@ -9,7 +9,7 @@ const Slider = ({ sliderData }) => {
     const [activeSlide, setActiveSlide] = useState(0)
     const [innerWidth, setInnerWidth] = useState(window.innerWidth)
 
-    const isMobile = window.innerWidth < 668
+    const isMobile = innerWidth < 668
 
     const calculatedImageWidth = useMemo(() => {
         let val = 0
@@ -22,14 +22,15 @@ const Slider = ({ sliderData }) => {
     }, [innerWidth, isMobile])
 
     useEffect(() => {
-        const onResize = () => setInnerWidth(window.innerWidth)
+        const onResize = () => setInnerWidth(containerRef?.current?.clientWidth)
         window.addEventListener('resize', onResize);
 
         return () => {
             window.removeEventListener('resize', onResize)
         }
-    }, [])
+    }, [containerRef])
 
+    
     const moveViewPort = itemsToMove => {
         if ((itemsToMove < 0 && activeSlide === 0) || (itemsToMove > 0 && activeSlide + 1 === sliderData.length)) return
         if (containerRef.current) {
@@ -75,10 +76,8 @@ const Slider = ({ sliderData }) => {
     }
 
 
-
     useEffect(() => {
         const onContainerScroll = debounce((e) => {
-            console.log("scrolled")
             e.preventDefault();
             if (e.deltaY < 0) {
                 moveViewPort(-1)
@@ -96,10 +95,10 @@ const Slider = ({ sliderData }) => {
     }, [activeSlide])
 
     return (
-        <div className='relative w-full'>
+        <div className='relative w-full' id="container">
             <div
                 ref={containerRef}
-                style={{ paddingLeft: isMobile ? 24 : (innerWidth / 2 - (calculatedImageWidth / 2 + 0)), paddingRight: innerWidth / (isMobile ? 1 : 2) - (calculatedImageWidth / (isMobile ? 1 : 2) + 0) }}
+                style={{ paddingLeft: isMobile ? 24 : (innerWidth / 2 - (calculatedImageWidth / 2 + 14)), paddingRight: innerWidth / (isMobile ? 1 : 2) - (calculatedImageWidth / (isMobile ? 1 : 2) + 0) }}
                 className='
                     sm:mt-[55px]
                     mt-9
